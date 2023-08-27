@@ -5,9 +5,11 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour
 {
     private float horizontal;
-    private float speed = 8f;
+    private float speed = 2f;
     private float jumpingPower = 16f;
     private bool isFacingRight = true;
+
+    public Animator animator;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -19,6 +21,8 @@ public class CharacterMovement : MonoBehaviour
     void Update()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
+
+        
 
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
@@ -36,6 +40,8 @@ public class CharacterMovement : MonoBehaviour
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+
+        animator.SetFloat("Speed", Mathf.Abs(horizontal*speed));
     }
 
     private bool IsGrounded()
