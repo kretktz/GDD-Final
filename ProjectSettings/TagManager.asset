@@ -14,7 +14,7 @@ TagManager:
   - 
   - 
   - Ground
-  - 
+  - Foreground
   - 
   - 
   - 
@@ -46,6 +46,9 @@ TagManager:
     locked: 0
   - name: Layer-2
     uniqueID: 2114431553
+    locked: 0
+  - name: Fog
+    uniqueID: 3747384171
     locked: 0
   - name: Layer-1
     uniqueID: 2383153841
