@@ -8,8 +8,8 @@ public class PlayerMovement : MonoBehaviour
     public Animator animator;
 
     private float horizontal;
-    private float speed = 8f;
-    private float jumpingPower = 16f;
+    private float speed = 4f;
+    private float jumpingPower = 8f;
     private bool isFacingRight = true;
 
     [SerializeField] private Rigidbody2D rb;
@@ -21,6 +21,9 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (DialogueManager.isActive == true)
+            return;
+
         horizontal = Input.GetAxisRaw("Horizontal");
 
         animator.SetFloat("Speed", Mathf.Abs(horizontal));
