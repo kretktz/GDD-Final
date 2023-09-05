@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public Animator animator;
+
     [SerializeField]
     private float speed;
 
     [SerializeField]
-    private float pauseDuration;
+    private int pauseDuration;
 
     [SerializeField]
     private Vector3[] positions;
 
+    private bool isMoving;
     private int index;
     private bool isFacingRight = true;
     private float latestDirectionChangeTime;
@@ -20,30 +23,41 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         latestDirectionChangeTime = 0f;
+
+        isMoving = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        animator.SetBool("IsMoving", isMoving);
+
         if (Time.time - latestDirectionChangeTime > pauseDuration)
         {
             latestDirectionChangeTime = Time.time;
             if (transform.position == positions[index])
             {
+                
                 if (index == positions.Length - 1)
                 {
                     index = 0;
-                    Flip();
                 }
                 else
                 {
                     index++;
-                    Flip();
                 }
+                Flip();
             }
         }
 
+        if (transform.position == positions[index])
+        {
+            isMoving = false;
+        }
+
         Move();
+
+        
     }
 
     private void Flip()
@@ -52,10 +66,12 @@ public class Enemy : MonoBehaviour
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
+            isMoving = true;
     }
 
     private void Move()
     {
         transform.position = Vector2.MoveTowards(transform.position, positions[index], Time.deltaTime * speed);
+        
     }
 }
