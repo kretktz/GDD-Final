@@ -8,31 +8,42 @@ public class Enemy : MonoBehaviour
     private float speed;
 
     [SerializeField]
+    private float pauseDuration;
+
+    [SerializeField]
     private Vector3[] positions;
 
     private int index;
     private bool isFacingRight = true;
+    private float latestDirectionChangeTime;
+
+    private void Start()
+    {
+        latestDirectionChangeTime = 0f;
+    }
 
     // Update is called once per frame
     void Update()
     {
-        
-
-        transform.position = Vector2.MoveTowards(transform.position, positions[index], Time.deltaTime * speed);
-
-        if (transform.position == positions[index])
+        if (Time.time - latestDirectionChangeTime > pauseDuration)
         {
-            if (index == positions.Length - 1)
+            latestDirectionChangeTime = Time.time;
+            if (transform.position == positions[index])
             {
-                index = 0;
-                Flip();
-            }
-            else
-            {
-                index++;
-                Flip();
+                if (index == positions.Length - 1)
+                {
+                    index = 0;
+                    Flip();
+                }
+                else
+                {
+                    index++;
+                    Flip();
+                }
             }
         }
+
+        Move();
     }
 
     private void Flip()
@@ -41,5 +52,10 @@ public class Enemy : MonoBehaviour
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
+    }
+
+    private void Move()
+    {
+        transform.position = Vector2.MoveTowards(transform.position, positions[index], Time.deltaTime * speed);
     }
 }
