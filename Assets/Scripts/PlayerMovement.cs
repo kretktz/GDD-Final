@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
 
     public Animator animator;
 
-    private float horizontal;
+    public float horizontal;
     private float speed = 4f;
     private float jumpingPower = 8f;
     private bool isFacingRight = true;
@@ -21,14 +21,17 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (DialogueManager.isActive == true)
-        {
-            return;
-        }
+        
 
         horizontal = Input.GetAxisRaw("Horizontal");
 
         animator.SetFloat("Speed", Mathf.Abs(horizontal));
+
+        if (DialogueManager.isActive == true)
+        {
+            horizontal = 0f;
+            return;
+        }
 
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
