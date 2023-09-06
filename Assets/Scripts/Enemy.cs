@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
 
     private bool isMoving;
     private int index;
-    private bool isFacingRight = true;
+    public bool isFacingRight;
     private float latestDirectionChangeTime;
 
     private void Start()
@@ -25,6 +25,8 @@ public class Enemy : MonoBehaviour
         latestDirectionChangeTime = 0f;
 
         isMoving = true;
+
+        isFacingRight = true;
     }
 
     // Update is called once per frame
