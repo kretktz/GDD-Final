@@ -80,29 +80,29 @@ public class FieldOfView : MonoBehaviour
             CanSeePlayer = false;
     }
 
-    //helper functions to visualize FOV
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.white;
-        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, radius);
+    ////helper functions to visualize FOV
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.white;
+    //    UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, radius);
 
-        Vector3 angle01 = DirectionFromAngle(-angle / 2);
-        Vector3 angle02 = DirectionFromAngle(angle / 2);
+    //    Vector3 angle01 = DirectionFromAngle(-angle / 2);
+    //    Vector3 angle02 = DirectionFromAngle(angle / 2);
 
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(transform.position, transform.position + angle01 * radius);
-        Gizmos.DrawLine(transform.position, transform.position + angle02 * radius);
+    //    Gizmos.color = Color.yellow;
+    //    Gizmos.DrawLine(transform.position, transform.position + angle01 * radius);
+    //    Gizmos.DrawLine(transform.position, transform.position + angle02 * radius);
 
-        if (CanSeePlayer)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, playerRef.transform.position);
-        }
-    }
+    //    if (CanSeePlayer)
+    //    {
+    //        Gizmos.color = Color.red;
+    //        Gizmos.DrawLine(transform.position, playerRef.transform.position);
+    //    }
+    //}
 
-    //utility function to draw angle on the Gizmo in editor
-    private Vector2 DirectionFromAngle(float angleInDegrees)
-    {
-        return (Vector2)(Quaternion.Euler(0, 0, angleInDegrees) * (transform.rotation.x == 180 ? -transform.right : transform.right));
-    }
+    ////utility function to draw angle on the Gizmo in editor
+    //private Vector2 DirectionFromAngle(float angleInDegrees)
+    //{
+    //    return (Vector2)(Quaternion.Euler(0, 0, angleInDegrees) * (transform.rotation.x == 180 ? -transform.right : transform.right));
+    //}
 }
