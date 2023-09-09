@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class FieldOfView : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class FieldOfView : MonoBehaviour
 
     public Enemy enemy;
 
+    public Light2D lt;
+
     private bool isFacingRight;
 
     public bool CanSeePlayer { get; private set; }
@@ -23,12 +26,14 @@ public class FieldOfView : MonoBehaviour
         StartCoroutine(FOVCheck());
 
         isFacingRight = enemy.isFacingRight;
+
+        lt.color = Color.yellow;
     }
 
     //minimize system load by calling the function every 0.2 seconds instead of every frame
     private IEnumerator FOVCheck()
     {
-        WaitForSeconds wait = new WaitForSeconds(0.2f);
+        WaitForSeconds wait = new WaitForSeconds(0.01f);
 
         while (true)
         {
@@ -49,23 +54,22 @@ public class FieldOfView : MonoBehaviour
             Transform target = rangeCheck[0].transform;
 
             Vector2 directionToTarget;
+            float distanceToTarget;
 
             if (isFacingRight)
             {
                 directionToTarget = (target.position - transform.position).normalized;
+                distanceToTarget = Vector2.Distance(transform.position, target.position);
             }
             else
             {
-                directionToTarget = (-target.position + transform.position).normalized;
+                directionToTarget = (transform.position - target.position).normalized;
+                distanceToTarget = Vector2.Distance(transform.position, target.position)/2;
             }
-            
-
 
             //check if target is within the angle
             if (Vector2.Angle(transform.rotation.y == 180 ? -transform.right : transform.right, directionToTarget) < angle / 2)
             {
-                float distanceToTarget = Vector2.Distance(transform.position, target.position);
-
                 if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer))
                 {
                     CanSeePlayer = true;
@@ -78,31 +82,54 @@ public class FieldOfView : MonoBehaviour
         }
         else if (CanSeePlayer)
             CanSeePlayer = false;
+
+        if(CanSeePlayer)
+        {
+            
+            FindObjectOfType<Manager>().EndGame();
+        }
+
+        ChangeLight();
+
+        
     }
 
-    ////helper functions to visualize FOV
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.white;
-    //    UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, radius);
+    public void ChangeLight()
+    {
+        if(CanSeePlayer)
+        {
+            lt.color = Color.red;
+        }
+        else
+        {
+            lt.color = Color.yellow;
+        }
+        
+    }
 
-    //    Vector3 angle01 = DirectionFromAngle(-angle / 2);
-    //    Vector3 angle02 = DirectionFromAngle(angle / 2);
+    //helper functions to visualize FOV
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white;
+        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, radius);
 
-    //    Gizmos.color = Color.yellow;
-    //    Gizmos.DrawLine(transform.position, transform.position + angle01 * radius);
-    //    Gizmos.DrawLine(transform.position, transform.position + angle02 * radius);
+        Vector3 angle01 = DirectionFromAngle(-angle / 2);
+        Vector3 angle02 = DirectionFromAngle(angle / 2);
 
-    //    if (CanSeePlayer)
-    //    {
-    //        Gizmos.color = Color.red;
-    //        Gizmos.DrawLine(transform.position, playerRef.transform.position);
-    //    }
-    //}
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, transform.position + angle01 * radius);
+        Gizmos.DrawLine(transform.position, transform.position + angle02 * radius);
 
-    ////utility function to draw angle on the Gizmo in editor
-    //private Vector2 DirectionFromAngle(float angleInDegrees)
-    //{
-    //    return (Vector2)(Quaternion.Euler(0, 0, angleInDegrees) * (transform.rotation.x == 180 ? -transform.right : transform.right));
-    //}
+        if (CanSeePlayer)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, playerRef.transform.position);
+        }
+    }
+
+    //utility function to draw angle on the Gizmo in editor
+    private Vector2 DirectionFromAngle(float angleInDegrees)
+    {
+        return (Vector2)(Quaternion.Euler(0, 0, angleInDegrees) * (transform.rotation.x == 180 ? -transform.right : transform.right));
+    }
 }
