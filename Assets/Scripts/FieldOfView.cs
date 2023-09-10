@@ -53,6 +53,10 @@ public class FieldOfView : MonoBehaviour
         {
             Transform target = rangeCheck[0].transform;
 
+            Vector3 shiftUp;
+
+            shiftUp = new Vector3(0.0f, 3.0f, 0.0f);
+
             Vector2 directionToTarget;
             float distanceToTarget;
 
