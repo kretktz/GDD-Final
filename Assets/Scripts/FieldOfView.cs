@@ -58,19 +58,25 @@ public class FieldOfView : MonoBehaviour
 
             if (isFacingRight)
             {
-                directionToTarget = (target.position - transform.position).normalized;
+                directionToTarget = (target.position - transform.position);
                 distanceToTarget = Vector2.Distance(transform.position, target.position);
             }
             else
             {
-                directionToTarget = (transform.position - target.position).normalized;
+                directionToTarget = -(target.position - transform.position);
                 distanceToTarget = Vector2.Distance(transform.position, target.position)/2;
             }
 
             //check if target is within the angle
             if (Vector2.Angle(transform.rotation.y == 180 ? -transform.right : transform.right, directionToTarget) < angle / 2)
             {
-                if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer))
+                if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer) &&
+                    isFacingRight)
+                {
+                    CanSeePlayer = true;
+                }
+                else if (!Physics2D.Raycast(target.position, directionToTarget, distanceToTarget, obstructionLayer) &&
+                    !isFacingRight)
                 {
                     CanSeePlayer = true;
                 }
