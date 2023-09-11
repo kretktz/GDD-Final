@@ -25,7 +25,6 @@ public class Enemy : MonoBehaviour
         latestDirectionChangeTime = 0f;
 
         isMoving = true;
-
         isFacingRight = true;
     }
 
@@ -34,12 +33,12 @@ public class Enemy : MonoBehaviour
     {
         animator.SetBool("IsMoving", isMoving);
 
+        // Logic handling the pause at the end of patrol
         if (Time.time - latestDirectionChangeTime > pauseDuration)
         {
             latestDirectionChangeTime = Time.time;
-            if (transform.position == positions[index])
+            if (transform.position == positions[index]) // reched the end of path
             {
-                
                 if (index == positions.Length - 1)
                 {
                     index = 0;
@@ -54,12 +53,10 @@ public class Enemy : MonoBehaviour
 
         if (transform.position == positions[index])
         {
-            isMoving = false;
+            isMoving = false; //play idle animation
         }
 
         Move();
-
-        
     }
 
     private void Flip()
@@ -74,6 +71,5 @@ public class Enemy : MonoBehaviour
     private void Move()
     {
         transform.position = Vector2.MoveTowards(transform.position, positions[index], Time.deltaTime * speed);
-        
     }
 }

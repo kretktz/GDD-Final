@@ -8,17 +8,13 @@ public class PlayerMovement : MonoBehaviour
     public Animator animator;
     public CapsuleCollider2D col;
 
-    // Collider size settings for crouching and standing
-    public Vector2 standingOffset;
-    public Vector2 standingSize;
-    public Vector2 crouchingSize;
-    public Vector2 crouchingOffset;
-
     public float horizontal;
     private float speed = 4f;
-    private float jumpingPower = 8f;
+    private float jumpingPower = 11f;
+
     private bool isFacingRight = true;
-    private bool crouchHeld = false, isCrouching = false, isUnderPlatform = false;
+    private bool crouchHeld = false, isCrouching = false, 
+                 isUnderPlatform = false, jump = false;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -26,21 +22,29 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        // fetch components
         col = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
-
-
-        col.size = standingSize;
-        standingSize = col.size;
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+
         horizontal = Input.GetAxisRaw("Horizontal");
 
+        // variable sent to the animator to trigger the walking animation
         animator.SetFloat("Speed", Mathf.Abs(horizontal));
-        
+
+        //Stop movement when dialog is displayed
+        if (DialogueManager.isActive == true)
+        {
+            horizontal = 0f;
+            return;
+        }
+
+        // Crouching animation logic
         if (IsGrounded() && (crouchHeld || isUnderPlatform))
         {
             isCrouching = true;
@@ -54,13 +58,9 @@ public class PlayerMovement : MonoBehaviour
 
         crouchHeld = (IsGrounded() && Input.GetButton("Crouch")) ? true : false;
 
-        //Stop movement when dialog is displayed
-        if (DialogueManager.isActive == true)
-        {
-            horizontal = 0f;
-            return;
-        }
+        
 
+        // Jumping logic
         if (Input.GetButtonDown("Jump") && IsGrounded() && !crouchHeld)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
@@ -70,6 +70,15 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
+
+        if (!IsGrounded())
+        {
+            jump = true;
+        } else { jump = false; }
+
+        animator.SetBool("Jump", jump);
+
+      
 
         Flip();
     }
@@ -82,11 +91,13 @@ public class PlayerMovement : MonoBehaviour
         GetComponent<BoxCollider2D>().isTrigger = (crouchHeld || isUnderPlatform) ? true : false;
     }
 
+    // Return whether the character is on the ground
     private bool IsGrounded()
     {
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
     }
 
+    // Flip the character sprite from left to right depending on the direction faced
     private void Flip()
     {
         if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
@@ -99,6 +110,7 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+    // Collision detection funcs
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
