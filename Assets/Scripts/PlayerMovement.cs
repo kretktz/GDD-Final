@@ -8,15 +8,17 @@ public class PlayerMovement : MonoBehaviour
     public Animator animator;
     public CapsuleCollider2D col;
 
+    // Collider size settings for crouching and standing
     public Vector2 standingOffset;
     public Vector2 standingSize;
     public Vector2 crouchingSize;
     public Vector2 crouchingOffset;
+
     public float horizontal;
     private float speed = 4f;
     private float jumpingPower = 8f;
     private bool isFacingRight = true;
-    private bool isCrouching = false;
+    private bool crouchHeld = false, isCrouching = false, isUnderPlatform = false;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -25,8 +27,10 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         col = GetComponent<CapsuleCollider2D>();
-        col.size = standingSize;
+        rb = GetComponent<Rigidbody2D>();
 
+
+        col.size = standingSize;
         standingSize = col.size;
     }
 
@@ -36,15 +40,28 @@ public class PlayerMovement : MonoBehaviour
         horizontal = Input.GetAxisRaw("Horizontal");
 
         animator.SetFloat("Speed", Mathf.Abs(horizontal));
+        
+        if (IsGrounded() && (crouchHeld || isUnderPlatform))
+        {
+            isCrouching = true;
+        }
+        else
+        { 
+            isCrouching = false;
+        }
+
         animator.SetBool("isCrouching", isCrouching);
 
+        crouchHeld = (IsGrounded() && Input.GetButton("Crouch")) ? true : false;
+
+        //Stop movement when dialog is displayed
         if (DialogueManager.isActive == true)
         {
             horizontal = 0f;
             return;
         }
 
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+        if (Input.GetButtonDown("Jump") && IsGrounded() && !crouchHeld)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
@@ -54,25 +71,15 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            isCrouching = true;
-            col.size = crouchingSize;
-            col.offset = crouchingOffset;
-        }
-        if (Input.GetKeyUp(KeyCode.C))
-        {
-            isCrouching = false;
-            col.size = standingSize;
-            col.offset = standingOffset;
-        }
-
         Flip();
     }
 
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+
+        // Detect box collision when crouching
+        GetComponent<BoxCollider2D>().isTrigger = (crouchHeld || isUnderPlatform) ? true : false;
     }
 
     private bool IsGrounded()
@@ -91,5 +98,18 @@ public class PlayerMovement : MonoBehaviour
         }
         
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
+            isUnderPlatform = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
+            isUnderPlatform = false;
+    }
+
 }
 
