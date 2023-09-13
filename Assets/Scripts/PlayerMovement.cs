@@ -9,8 +9,8 @@ public class PlayerMovement : MonoBehaviour
     //public CapsuleCollider2D col;
 
     public float horizontal;
-    private float speed = 4f;
-    private float jumpingPower = 11f;
+    private float speed = 5f;
+    private float jumpingPower = 15f;
 
     private bool isFacingRight = true, canMove;
     private bool crouchHeld = false, isCrouching = false, 

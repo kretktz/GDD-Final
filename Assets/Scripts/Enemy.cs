@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     private float speed;
 
     [SerializeField]
-    private int pauseDuration;
+    private float pauseDuration;
 
     [SerializeField]
     private Vector3[] positions;
@@ -34,9 +34,10 @@ public class Enemy : MonoBehaviour
         animator.SetBool("IsMoving", isMoving);
 
         // Logic handling the pause at the end of patrol
-        if (Time.time - latestDirectionChangeTime > pauseDuration)
+        if (Time.time > latestDirectionChangeTime)
         {
-            latestDirectionChangeTime = Time.time;
+            latestDirectionChangeTime = Time.time + pauseDuration;
+
             if (transform.position == positions[index]) // reched the end of path
             {
                 if (index == positions.Length - 1)
@@ -61,11 +62,12 @@ public class Enemy : MonoBehaviour
 
     private void Flip()
     {
-            isFacingRight = !isFacingRight;
-            Vector3 localScale = transform.localScale;
-            localScale.x *= -1f;
-            transform.localScale = localScale;
-            isMoving = true;
+        isFacingRight = !isFacingRight;
+        Vector3 localScale = transform.localScale;
+        localScale.x *= -1f;
+        transform.localScale = localScale;
+        isMoving = true;
+        latestDirectionChangeTime = Time.time;
     }
 
     private void Move()

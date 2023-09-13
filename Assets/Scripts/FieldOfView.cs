@@ -18,6 +18,9 @@ public class FieldOfView : MonoBehaviour
 
     private bool isFacingRight;
 
+    private float sfxRate = 1.0f;
+    private float nextSFX = 0.0f;
+
     public bool CanSeePlayer { get; private set; }
 
     public AudioSource bgAudio;
@@ -96,16 +99,17 @@ public class FieldOfView : MonoBehaviour
         else if (CanSeePlayer)
             CanSeePlayer = false;
 
-        if(CanSeePlayer)
+        if(Manager.spotCount == 0)
         {
-            
             FindObjectOfType<Manager>().EndGame();
         }
 
         ChangeLight();
 
         PlaySound();
+        
     }
+
 
     public void ChangeLight()
     {
@@ -122,9 +126,11 @@ public class FieldOfView : MonoBehaviour
 
     public void PlaySound()
     {
-        if(CanSeePlayer)
+        if(CanSeePlayer && Time.time > nextSFX)
         {
+            nextSFX = Time.time + sfxRate;
             bgAudio.PlayOneShot(detectedFX);
+            Manager.spotCount--;
         }
     }
 
