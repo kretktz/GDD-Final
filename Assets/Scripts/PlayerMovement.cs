@@ -6,13 +6,13 @@ public class PlayerMovement : MonoBehaviour
 {
 
     public Animator animator;
-    public CapsuleCollider2D col;
+    //public CapsuleCollider2D col;
 
     public float horizontal;
     private float speed = 4f;
     private float jumpingPower = 11f;
 
-    private bool isFacingRight = true;
+    private bool isFacingRight = true, canMove;
     private bool crouchHeld = false, isCrouching = false, 
                  isUnderPlatform = false, jump = false;
 
@@ -23,26 +23,31 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         // fetch components
-        col = GetComponent<CapsuleCollider2D>();
+        //col = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
+        canMove = true;
     }
 
     // Update is called once per frame
     void Update()
     {
         
-
-        horizontal = Input.GetAxisRaw("Horizontal");
+        if (canMove)
+        {
+            horizontal = Input.GetAxisRaw("Horizontal");
+        }
+        
 
         // variable sent to the animator to trigger the walking animation
         animator.SetFloat("Speed", Mathf.Abs(horizontal));
 
         //Stop movement when dialog is displayed
-        if (DialogueManager.isActive == true)
+        if (DialogueManager.isActive || StartMessageWindow.isDisplayed)
         {
+            canMove = false;
             horizontal = 0f;
             return;
-        }
+        } else { canMove = true; }
 
         // Crouching animation logic
         if (IsGrounded() && (crouchHeld || isUnderPlatform))
@@ -78,14 +83,16 @@ public class PlayerMovement : MonoBehaviour
 
         animator.SetBool("Jump", jump);
 
-      
-
         Flip();
     }
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        if (canMove)
+        {
+            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        }
+        
 
         // Detect box collision when crouching
         GetComponent<BoxCollider2D>().isTrigger = (crouchHeld || isUnderPlatform) ? true : false;

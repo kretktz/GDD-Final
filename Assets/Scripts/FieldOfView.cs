@@ -19,6 +19,9 @@ public class FieldOfView : MonoBehaviour
     private bool isFacingRight;
 
     public bool CanSeePlayer { get; private set; }
+
+    public AudioSource bgAudio;
+    public AudioClip detectedFX;
     void Start()
     {
         playerRef = GameObject.FindGameObjectWithTag("Player");
@@ -101,7 +104,7 @@ public class FieldOfView : MonoBehaviour
 
         ChangeLight();
 
-        
+        PlaySound();
     }
 
     public void ChangeLight()
@@ -115,6 +118,14 @@ public class FieldOfView : MonoBehaviour
             lt.color = Color.yellow;
         }
         
+    }
+
+    public void PlaySound()
+    {
+        if(CanSeePlayer)
+        {
+            bgAudio.PlayOneShot(detectedFX);
+        }
     }
 
     ////helper functions to visualize FOV
