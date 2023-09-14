@@ -10,14 +10,20 @@ public class StartMessageWindow : MonoBehaviour
 
     public static bool isDisplayed;
 
+    private bool hasBeenRead = false;
+
     private Vector3 visible = new Vector3(1, 1, 1);
     private Vector3 invisible = new Vector3(0, 0, 0);
     // Start is called before the first frame update
     void Start()
     {
-        backgroundBox.localScale = visible;
-        Time.timeScale = 0f;
-        isDisplayed = true;
+        if (!hasBeenRead)
+        {
+            backgroundBox.localScale = visible;
+            Time.timeScale = 0f;
+            isDisplayed = true;
+        }
+        
     }
 
     // Update is called once per frame
@@ -34,5 +40,6 @@ public class StartMessageWindow : MonoBehaviour
     public void CloseMessage()
     {
         backgroundBox.localScale = invisible;
+        hasBeenRead = true;
     }
 }

@@ -26,8 +26,6 @@ public class DialogueManager : MonoBehaviour
         isActive = true;
 
         backgroundBox.localScale = visible;
-
-        Debug.Log("Started conversation. Loaded messages: " + messages.Length);
         DisplayMessage();
     }
 
@@ -50,7 +48,6 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Convo ended");
             isActive = false;
             backgroundBox.localScale = invisible;
         }

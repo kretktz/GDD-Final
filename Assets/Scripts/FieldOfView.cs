@@ -34,6 +34,8 @@ public class FieldOfView : MonoBehaviour
         isFacingRight = enemy.isFacingRight;
 
         lt.color = Color.yellow;
+
+        bgAudio.volume = 0.3f;
     }
 
     //minimize system load by calling the function every 0.2 seconds instead of every frame

@@ -31,7 +31,7 @@ public class Counter : MonoBehaviour
         counter = Manager.spotCount;
         counterText.text = description + counter.ToString("0.00");
 
-        if (counter < 3f)
+        if (counter < 3f && counter > 1f)
         {
             counterText.color = Color.yellow;
         }
