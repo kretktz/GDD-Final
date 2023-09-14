@@ -3,20 +3,20 @@ using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
-    public static int spotCount = 10;
+    public static float spotCount = 10.00f;
 
     bool gameHasEnded = false;
 
-    public float restartDelay = 1f;
+    //public float restartDelay = 0.1f;
     public void EndGame()
     {
         if (gameHasEnded == false)
         {
             gameHasEnded = true;
-            Debug.Log("Game over");
 
             //Restart the game
-            Invoke("Restart", restartDelay);
+            //Invoke("Restart", restartDelay);
+            Restart();
         }
 
     }
@@ -24,5 +24,12 @@ public class Manager : MonoBehaviour
     void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        ResetCounter();
+    }
+
+    void ResetCounter()
+    {
+        spotCount = 10.00f;
     }
 }

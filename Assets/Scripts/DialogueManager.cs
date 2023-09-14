@@ -59,7 +59,7 @@ public class DialogueManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        backgroundBox.localScale = new Vector3(0, 0, 0);
+        backgroundBox.localScale = invisible;
     }
 
     // Update is called once per frame

@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     //public CapsuleCollider2D col;
 
     public float horizontal;
-    private float speed = 5f;
+    private float speed = 8f;
     private float jumpingPower = 15f;
 
     private bool isFacingRight = true, canMove;
@@ -53,10 +53,12 @@ public class PlayerMovement : MonoBehaviour
         if (IsGrounded() && (crouchHeld || isUnderPlatform))
         {
             isCrouching = true;
+            speed = 4f;
         }
         else
         { 
             isCrouching = false;
+            speed = 8f;
         }
 
         animator.SetBool("isCrouching", isCrouching);

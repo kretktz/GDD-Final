@@ -99,7 +99,7 @@ public class FieldOfView : MonoBehaviour
         else if (CanSeePlayer)
             CanSeePlayer = false;
 
-        if(Manager.spotCount == 0)
+        if(Manager.spotCount <= 0.00f)
         {
             FindObjectOfType<Manager>().EndGame();
         }
@@ -107,7 +107,8 @@ public class FieldOfView : MonoBehaviour
         ChangeLight();
 
         PlaySound();
-        
+
+        CountDown();
     }
 
 
@@ -130,7 +131,14 @@ public class FieldOfView : MonoBehaviour
         {
             nextSFX = Time.time + sfxRate;
             bgAudio.PlayOneShot(detectedFX);
-            Manager.spotCount--;
+        }
+    }
+
+    public void CountDown()
+    {
+        if (CanSeePlayer && Manager.spotCount > 0.00f)
+        {
+            Manager.spotCount -= 1f/60;
         }
     }
 
