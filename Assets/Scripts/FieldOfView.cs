@@ -35,7 +35,7 @@ public class FieldOfView : MonoBehaviour
 
         lt.color = Color.yellow;
 
-        bgAudio.volume = 0.3f;
+        bgAudio.volume = 0.7f;
     }
 
     //minimize system load by calling the function every 0.2 seconds instead of every frame
