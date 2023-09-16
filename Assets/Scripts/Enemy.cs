@@ -18,12 +18,10 @@ public class Enemy : MonoBehaviour
     private bool isMoving;
     private int index;
     public bool isFacingRight;
-    private float latestDirectionChangeTime;
+    private float latestDirectionChangeTime = 0f;
 
     private void Start()
     {
-        latestDirectionChangeTime = 0f;
-
         isMoving = true;
         isFacingRight = true;
     }

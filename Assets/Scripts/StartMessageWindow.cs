@@ -20,7 +20,7 @@ public class StartMessageWindow : MonoBehaviour
         if (!hasBeenRead)
         {
             backgroundBox.localScale = visible;
-            Time.timeScale = 0f;
+            //Time.timeScale = 0f;
             isDisplayed = true;
         }
         
@@ -31,7 +31,7 @@ public class StartMessageWindow : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Time.timeScale = 1f;
+            //Time.timeScale = 1f;
             isDisplayed = false;
             CloseMessage();
         }

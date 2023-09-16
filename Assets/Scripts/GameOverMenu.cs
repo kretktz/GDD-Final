@@ -12,6 +12,7 @@ public class GameOverMenu : MonoBehaviour
     private void Start()
     {
         gameIsOver = false;
+        Time.timeScale = 1f;
     }
 
     // Update is called once per frame
@@ -25,7 +26,7 @@ public class GameOverMenu : MonoBehaviour
         else
         {
             gameOverMenuUI.SetActive(false);
-            Time.timeScale = 1f;
+            
         }
     }
     public void Restart()
@@ -33,6 +34,7 @@ public class GameOverMenu : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         ResetCounter();
         gameIsOver = false;
+        Time.timeScale = 1f;
     }
 
     void ResetCounter()
