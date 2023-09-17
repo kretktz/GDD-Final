@@ -14,6 +14,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4663809410854967694, guid: 3629532f6d8e08042a70aaa1cd697500,
         type: 3}
+      propertyPath: speed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4663809410854967694, guid: 3629532f6d8e08042a70aaa1cd697500,
+        type: 3}
+      propertyPath: pauseDuration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4663809410854967694, guid: 3629532f6d8e08042a70aaa1cd697500,
+        type: 3}
       propertyPath: positions.Array.data[0].x
       value: 193
       objectReference: {fileID: 0}

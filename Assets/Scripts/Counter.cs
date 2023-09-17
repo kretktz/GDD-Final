@@ -15,6 +15,7 @@ public class Counter : MonoBehaviour
 
     void Start()
     {
+        //set the box to visible dimensions at start
         backgroundBox.localScale = visible;
     }
 
@@ -28,9 +29,11 @@ public class Counter : MonoBehaviour
         }
         else { backgroundBox.localScale = visible; }
 
+        // display the timer on the screen
         counter = Manager.spotCount;
         counterText.text = description + counter.ToString("0.00");
 
+        // change the font colour as the time decreases
         if (counter < 3f && counter > 1f)
         {
             counterText.color = Color.yellow;

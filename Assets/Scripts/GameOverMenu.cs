@@ -15,7 +15,6 @@ public class GameOverMenu : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(gameIsOver)

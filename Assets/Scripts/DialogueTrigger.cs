@@ -9,10 +9,12 @@ public class DialogueTrigger : MonoBehaviour
 
     public void StartDialogue()
     {
+        // fetch OpenDialogue function from DialogueManager class
         FindObjectOfType<DialogueManager>().OpenDialogue(messages, actors);
     }
 }
 
+// allow dialogue editing in the main editor window
 [System.Serializable]
 public class Message
 {

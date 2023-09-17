@@ -8,11 +8,13 @@ public class btnFX : MonoBehaviour
     public AudioClip hoverFx;
     public AudioClip clickFx;
 
+    //play sound on mouse hover
     public void HoverSound()
     {
         menuFx.PlayOneShot(hoverFx);
     }
 
+    //play sound on mouse click
     public void ClickSound()
     {
         menuFx.PlayOneShot(clickFx);

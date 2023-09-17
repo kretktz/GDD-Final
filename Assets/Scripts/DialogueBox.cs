@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class DialogueBox : MonoBehaviour
 {
+    //allow tranform assignment in the editor
     public Transform boxSize;
-
 }

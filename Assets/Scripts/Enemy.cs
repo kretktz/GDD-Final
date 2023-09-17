@@ -50,7 +50,7 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        if (transform.position == positions[index])
+        if (transform.position == positions[index]) // reached the set position
         {
             isMoving = false; //play idle animation
         }
@@ -60,12 +60,12 @@ public class Enemy : MonoBehaviour
 
     private void Flip()
     {
-        isFacingRight = !isFacingRight;
+        isFacingRight = !isFacingRight; //swap direction
         Vector3 localScale = transform.localScale;
         localScale.x *= -1f;
         transform.localScale = localScale;
         isMoving = true;
-        latestDirectionChangeTime = Time.time;
+        latestDirectionChangeTime = Time.time; // record the time od changing direction
     }
 
     private void Move()

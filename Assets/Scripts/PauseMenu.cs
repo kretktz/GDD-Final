@@ -25,6 +25,8 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    // handling functions --------------------------------------------------------
+
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
@@ -48,6 +50,5 @@ public class PauseMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
-
     }
 }

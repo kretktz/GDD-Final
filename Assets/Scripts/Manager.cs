@@ -7,7 +7,6 @@ public class Manager : MonoBehaviour
 
     bool gameHasEnded = false;
 
-    //public float restartDelay = 0.1f;
     public void EndGame()
     {
         if (gameHasEnded == false)

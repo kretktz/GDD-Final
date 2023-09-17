@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-
     public Animator animator;
-    //public CapsuleCollider2D col;
 
     public float horizontal;
     private float speed = 8f;
@@ -23,15 +21,12 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         // fetch components
-        //col = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         canMove = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
         if (canMove)
         {
             horizontal = Input.GetAxisRaw("Horizontal");
@@ -94,7 +89,6 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
         }
-        
 
         // Detect box collision when crouching
         GetComponent<BoxCollider2D>().isTrigger = (crouchHeld || isUnderPlatform) ? true : false;
